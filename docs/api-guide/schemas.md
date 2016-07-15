@@ -157,14 +157,14 @@ return the schema.
 **views.py:**
 
     from rest_framework.decorators import api_view, renderer_classes
-    from rest_framework import renderers, schemas
+    from rest_framework import renderers, response, schemas
 
-    generator = schemas.SchemaGenerator(title='Bookings API')
 
     @api_view()
     @renderer_classes([renderers.CoreJSONRenderer])
     def schema_view(request):
-        return generator.get_schema()
+        generator = response.Response(schemas.SchemaGenerator(title='Bookings API'))
+        return response.Response(generator.get_schema())
 
 **urls.py:**
 
@@ -185,7 +185,7 @@ you need to pass the `request` argument to the `get_schema()` method, like so:
     @api_view()
     @renderer_classes([renderers.CoreJSONRenderer])
     def schema_view(request):
-        return generator.get_schema(request=request)
+        return response.Response(generator.get_schema(request=request))
 
 ## Explicit schema definition
 
@@ -273,7 +273,7 @@ Returns a `coreapi.Document` instance that represents the API schema.
     @api_view
     @renderer_classes([renderers.CoreJSONRenderer])
     def schema_view(request):
-        return generator.get_schema()
+        return Response(generator.get_schema())
 
 Arguments:
 
